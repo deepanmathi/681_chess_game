@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "react-chess-b94b7"
+    "default": "react-chess-b94b7",
+    "staging": "chess-game-c0b7a"
   }
 }
