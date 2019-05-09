@@ -82,7 +82,7 @@ class GameStatistics extends Component {
             const { totalMatchesPlayed, won,lost,noResult,inProgress,email } = player;
             return (
                 <tr key={email}>
-                    <td>{index}</td>
+                    <td>{index+1}</td>
                     <td>{email}</td>
                     <td>{totalMatchesPlayed}</td>
                     <td>{won}</td>
@@ -98,7 +98,7 @@ class GameStatistics extends Component {
         return(
             <div>
                 <hr />
-                This is a test of Leaderboard
+                <h1>Overall Stats</h1>
                 <Table responsive>
                     <thead>
                     <tr>

@@ -28,6 +28,7 @@ class Register extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.validateForm = this.validateForm.bind(this);
         this.password_validate = this.password_validate.bind(this);
+        this.name_validate = this.name_validate.bind(this);
         this.login = this.login.bind(this);
     }
 
@@ -56,7 +57,13 @@ class Register extends Component {
                         this.setState({errorMessage: error.message})
 
                     })
+        this.state.firstName='';
+        this.state.lastName='';
+        this.state.email='';
+        this.state.password='';
+        this.state.confirmPassword='';
         }
+        
         console.log(this.state.formErrors);
     }
 
@@ -65,8 +72,14 @@ class Register extends Component {
         if (this.state.firstName.length === 0) {
             error.push('First Name is required');
         }
+        else if (!this.name_validate(this.state.firstName)) {
+            error.push(' First Name: Use only Alphabets');
+        }
         if (this.state.lastName.length === 0) {
             error.push('Last Name is required');
+        }
+        else if (!this.name_validate(this.state.lastName)) {
+            error.push('Please enter valid Last Name. Use only: Alphabets');
         }
         if (this.state.email.length === 0) {
             error.push('Email Address is required');
@@ -103,6 +116,9 @@ class Register extends Component {
      password_validate(p) {
         return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(p);
     }
+    name_validate(p) {
+        return /^[A-Za-z]*$/.test(p);
+    }
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
@@ -118,6 +134,8 @@ class Register extends Component {
     render() {
         return (
             <div className="container">
+            <center><h1 style={{color: '#664EAE'}}><u> Registration Form</u></h1></center>
+            <br/>
                 <div className="row">
                     <div className="col-md-6">
                         <img src={chessLogo} style={{width: 400, height: 320}} alt="Chess-Logo" />
@@ -132,7 +150,7 @@ class Register extends Component {
                         <Card>
                             <Card.Body>
                                 <div className="col-md-12">
-                                    <span style={{color:'red'}}>{this.state.errorMessage}</span>
+                                    <span style={{color:'red', fontSize: '24px' }}>{this.state.errorMessage}</span>
                                     <span style={{color:'green'}}>{this.state.successMessage}</span>
                                 </div>
                                 <form>

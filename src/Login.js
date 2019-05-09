@@ -59,7 +59,9 @@ class Login extends Component {
     <div className="col-lg-6">
         <img src={chessLogo} style={{width: 420, height: 320}} alt="Chess-Logo" />
     </div>
+    
     <div className="col-lg-6">
+    <h1 style={{color: '#664EAE', fontSize:'20px'}}> Login Page</h1>
         <Card>
             <Card.Body>
                 <div className="col-md-4">
