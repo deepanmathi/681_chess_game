@@ -4,6 +4,7 @@ import chessLogo from './chess_logo.png';
 import './Register.css';
 import Card from "react-bootstrap/Card";
 import GameStatistics from "./GameStatistics";
+//import BlinkingText from "./BlinkingText";
 
 const { firebase } = window;
 
@@ -111,16 +112,21 @@ class Home extends Component {
         let disclaimer;
         let button;
         if (this.state.createGame) {
-            disclaimer = <div className="row">
-                <div className="col-md-12">
-                    <br />
+            disclaimer = <Card><div> <div className="row">
+                <div className="col-md-12" style={{color: 'black', fontSize: '15px'}}>
+                    
                     Please enter Email address for player 2
                 </div>
-            </div>;
-            textBox = <div className="row">
-                <div className="col-md-6"> <input value={this.state.email} onChange={this.handleChange} name="p2_email" /></div></div>;
-
-            button = <div className="col-md-6"><button onClick={this.createGame}>Go</button> </div>
+                
+            </div>
+            <br />
+           
+              <div className="row">
+               <div className="col-md-12"> <input value={this.state.email} onChange={this.handleChange} name="p2_email" /></div></div>
+                <br />
+            <div className="col-md-1"><button onClick={this.createGame}>Go</button> </div></div>
+            <br />
+            </Card>;
         } else {
             textBox = null;
         }
@@ -138,7 +144,8 @@ class Home extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <h2> Welcome {this.state.p1_email}. Please select an option below to continue </h2>
+        
+                        <h2> Welcome <label style={{color: '#7BB314', fontSize: '20px'}}>{this.state.p1_email}.</label> Please select an option below to continue </h2>
                     </div>
                 </div>
                 <Card>
@@ -153,28 +160,31 @@ class Home extends Component {
                                 <h3>&nbsp;</h3>
                                 <button onClick={this.clickCreateGame}>Create a New Game</button>
                                 <br/>
-                                {disclaimer}
-                                {textBox}
-                                {button}
-                            </div>
-                            <div className='col-md-1'>
+                               
+                                &nbsp; {disclaimer}
+                                
+                            
+                                <div className='col-md-1'>
                                 &nbsp;
                             </div>
+                                <button onClick={this.visitGameRoom}>Game Room</button>
+                            </div>
+                            
                             <div className="col-md-2">
                                 <h3>&nbsp;</h3>
-                                <button onClick={this.visitGameRoom}>Game Room</button>
+                                
                             </div>
                         </div>
                     </Card.Body>
                 </Card>
                 <br />
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <h2> Want to see how others are faring? </h2>
                     </div>
-                    <div className="col-md-6">
+                   
                         <button onClick={this.getLeaderBoard}>Game Statistics</button>
-                    </div>
+                   
                 </div>
                 <div className="row">
                     <div className="col-md-12">
