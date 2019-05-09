@@ -106,7 +106,7 @@ class Register extends Component {
                 error.push('Password and Confirm password do not match');
             }
         } else {
-            error.push('Confirm Password is needed');
+            error.push('Confirm Password is required');
         }
 
         this.setState({formErrors: error});
@@ -142,7 +142,7 @@ class Register extends Component {
                         <br />
                         <ul>
                             {this.state.formErrors.map(function (value, index) {
-                                return <li key={index} style={{color: 'red'}}>{value}</li>;
+                                return <li key={index} style={{color: 'red', fontSize: '14px' }}>{value}</li>;
                             })}
                         </ul>
                     </div>
@@ -151,7 +151,7 @@ class Register extends Component {
                             <Card.Body>
                                 <div className="col-md-12">
                                     <span style={{color:'red', fontSize: '24px' }}>{this.state.errorMessage}</span>
-                                    <span style={{color:'green'}}>{this.state.successMessage}</span>
+                                    <span style={{color:'green', fontSize: '14px'}}>{this.state.successMessage}</span>
                                 </div>
                                 <form>
                                     <div className="form-group">

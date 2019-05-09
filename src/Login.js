@@ -64,9 +64,9 @@ class Login extends Component {
     <h1 style={{color: '#664EAE', fontSize:'20px'}}> Login Page</h1>
         <Card>
             <Card.Body>
-                <div className="col-md-4">
-                    <span>{this.state.errorMessage}</span>
-                    <span>{this.state.successMessage}</span>
+                <div className="col-md-10">
+                    <span style={{color:'red', fontSize: '15px' }}>{this.state.errorMessage}</span>
+                    <span style={{color:'green', fontSize: '15px' }}>{this.state.successMessage}</span>
                 </div>
                 <div className="col-md-8">
                     <form>
@@ -87,7 +87,9 @@ class Login extends Component {
                 </div>
             </Card.Body>
         </Card>
+       
             </div>
+            
 </div>
 </div>
         );

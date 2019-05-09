@@ -30,26 +30,26 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const loggedInUser = localStorage.getItem('userID');
+        const loggedInUser = sessionStorage.getItem('userID');
         const hashLoc = window.location.hash;
         console.log(hashLoc);
         this.setState({p1_email: loggedInUser});
     }
 
     clickCreateGame = () => {
-        const loggedInUser = localStorage.getItem('userID');
+        const loggedInUser = sessionStorage.getItem('userID');
         this.setState({createGame: true});
         this.setState({p1_email: loggedInUser});
     };
 
     visitGameRoom = () => {
-        const loggedInUser = localStorage.getItem('userID');
+        const loggedInUser = sessionStorage.getItem('userID');
         window.location.hash = `#/room/${loggedInUser}`;
         location.reload();
     };
 
      createGame = () => {
-         let user = JSON.parse(localStorage.getItem('user'));
+         let user = JSON.parse(sessionStorage.getItem('user'));
 
         const newGame = {
             p1_token: Utils.token(),

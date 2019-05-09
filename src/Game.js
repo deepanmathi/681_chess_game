@@ -81,7 +81,7 @@ class Game extends React.Component {
     }
 
     function removeGreySquares() {
-      const arr = JSON.parse(localStorage.getItem('squares'));
+      const arr = JSON.parse(sessionStorage.getItem('squares'));
       const arrString = Array.from(arr);
       for(let i=0; i<arrString.length; i++) {
         let squareEl = $('#game-board .square-' + arrString[i]);
@@ -121,7 +121,7 @@ class Game extends React.Component {
         squareArray.push(moves[i].to);
         greySquare(moves[i].to);
       }
-      localStorage.setItem('squares',JSON.stringify(squareArray));
+      sessionStorage.setItem('squares',JSON.stringify(squareArray));
     }
 
     const board = ChessBoard('game-board', config);

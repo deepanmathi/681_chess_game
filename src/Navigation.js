@@ -24,7 +24,7 @@ class Navigation extends React.Component {
     }
 
     logOut() {
-        localStorage.clear();
+        sessionStorage.clear();
         firebase.auth().signOut().then(function() {
             console.log('User signed out');
         }).catch(function(error) {
