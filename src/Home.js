@@ -181,6 +181,7 @@ class Home extends Component {
                     {gameStat}
                     </div>
                 </div>
+                <br/>
             </div>
         );
     }
