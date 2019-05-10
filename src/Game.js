@@ -50,7 +50,13 @@ class Game extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    // Clear the interval right before component unmount
+    clearInterval(this.interval);
+}
+
   _tick() {
+    console.log('Tick Tock');
     const engine = this.engine;
     if (this.state.deadline) {
       const time = (Date.parse(this.state.deadline) - Date.parse(new Date()));
