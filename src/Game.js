@@ -88,7 +88,7 @@ class Game extends React.Component {
       turnUser: turnUser(playerNum, isMyTurn(playerNum, engine.turn()), game),
       turnOpponent: turnOpponent(playerNum, isMyTurn(playerNum, engine.turn()), game)
     });
-    
+
     if(this.state.statusText.indexOf('Game over')!=-1)
     {
       let winnerEmail;
@@ -167,6 +167,7 @@ class Game extends React.Component {
       const moves = engine.moves({
         square: square,
         verbose: true
+        
       });
       // exit if there are no moves available for this square
       if (moves.length === 0) return;
@@ -282,6 +283,7 @@ function figurePlayer(token, { p1_token, p2_token }) {
 }
 
 function turnText(playerNum, isMyTurn, {p1_email, p2_email}) {
+
   if (playerNum > 0) {
     let opponent,current;
       if (playerNum === 1) {
@@ -340,6 +342,7 @@ function turnOpponent(playerNum, isMyTurn, {p1_email, p2_email}) {
       return opponent;
     } else {
       return current;
+
     }
   } else {
     return "View Only";

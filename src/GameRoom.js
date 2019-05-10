@@ -53,27 +53,58 @@ class GameRoom extends Component {
              if (p1_email === this.state.userName) {
                 if (status === 'In Progress') {
                     link = domain() + "/#/home/" + p1_token;
+                    return (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{p2_email}</td>
+                            
+                            <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>Click to Play</a></td>
+                            <td>{status}</td>
+                        </tr>
+                    )
                 }
-                return (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{p2_email}</td>
-                        <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>Click to Play</a></td>
-                        <td>{status}</td>
-                    </tr>
-                )
+                
+                if (status === 'Complete') {
+                    link = domain() + "/#/home/" + p1_token;
+                    return (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{p1_email}</td>
+                            <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>View Results</a></td>
+                            <td>{status}</td>
+                        </tr>
+                    )
+                }
+                
             } else if (p2_email === this.state.userName) {
                 if (status === 'In Progress') {
                     link = domain() + "/#/home/" + p2_token;
+                    return (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{p1_email}</td>
+                            <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>Click to Play</a></td>
+                            <td>{status}</td>
+                        </tr>
+                    )
                 }
-                return (
-                    <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{p1_email}</td>
-                        <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>Click to Play</a></td>
-                        <td>{status}</td>
-                    </tr>
-                )
+                
+                 if(status === 'Complete') {
+                    link = domain() + "/#/home/" + p2_token;
+                    return (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{p1_email}</td>
+                            <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>View Results</a></td>
+                            <td>{status}</td>
+                        </tr>
+                    )
+                }
+                
+            }
+            
+            else if (p2_email === this.state.userName) {
+               
             }
             
         })
