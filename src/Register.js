@@ -55,13 +55,14 @@ class Register extends Component {
                         });
                     
                 }).then((u)=>{
-                    this.state.firstName='';
-                            this.state.lastName='';
-                            this.state.email='';
-                            this.state.password='';
-                            this.state.confirmPassword='';
-                            this.setState({successMessage: 'User successfully registered. Please login to the app from the Login screen now'})
-                })
+                    this.setState({firstName:'',
+                            lastName:'',
+                            email:'',
+                            password:'',
+                            confirmPassword:''
+                        });
+                    this.setState({successMessage: 'User successfully registered. Please login to the app from the Login screen now'})
+                  })
                     .catch((error) => {
                         console.log(error);
                         this.setState({errorMessage: error.message})
