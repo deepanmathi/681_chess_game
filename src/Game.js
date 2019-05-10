@@ -224,16 +224,20 @@ function figurePlayer(token, { p1_token, p2_token }) {
 }
 
 function turnText(playerNum, isMyTurn, {p1_email, p2_email}) {
+
   if (playerNum > 0) {
-    if (isMyTurn) {
-      return "Your Turn";
-    } else {
-      let opponent;
+    let opponent,current;
       if (playerNum === 1) {
+        current=p1_email;
         opponent = p2_email;
+        
       } else {
+        current=p2_email;
         opponent = p1_email;
       }
+    if (isMyTurn) {
+      return current+" Turn";
+    } else {
       return "Waiting for "+opponent+" 's move...";
     }
   } else {

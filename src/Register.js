@@ -79,7 +79,7 @@ class Register extends Component {
             error.push('Last Name is required');
         }
         else if (!this.name_validate(this.state.lastName)) {
-            error.push('Please enter valid Last Name. Use only: Alphabets');
+            error.push('Last Name: Use only Alphabets');
         }
         if (this.state.email.length === 0) {
             error.push('Email Address is required');
@@ -150,7 +150,7 @@ class Register extends Component {
                         <Card>
                             <Card.Body>
                                 <div className="col-md-12">
-                                    <span style={{color:'red', fontSize: '24px' }}>{this.state.errorMessage}</span>
+                                    <span style={{color:'red', fontSize: '14px' }}>{this.state.errorMessage}</span>
                                     <span style={{color:'green', fontSize: '14px'}}>{this.state.successMessage}</span>
                                 </div>
                                 <form>
