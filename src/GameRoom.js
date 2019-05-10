@@ -16,7 +16,6 @@ class GameRoom extends Component {
 
     componentDidMount() {
         let windowLoc = window.location.hash;
-        console.log(windowLoc);
         this.fetchGames();
         this.setState({
             stateExistingGame: this.existingGames
@@ -24,11 +23,12 @@ class GameRoom extends Component {
     }
 
     fetchGames() {
-        const db = firebase.database().ref("/player");
-        ["p1_email"].forEach((name) => {
+        const db = firebase.database().ref("/games");
+        ["p1_email","p2_email"].forEach((name) => {
             const ref = db.orderByChild(name).equalTo(this.state.userName);
             ref.on('value', (ref) => {
-                const key = Object.keys(ref.val());
+                if (ref.val()){
+                    const key = Object.keys(ref.val());
                     const value = Object.values(ref.val());
                     value.map((val) => {
                         this.existingGames.push(val);
@@ -36,8 +36,8 @@ class GameRoom extends Component {
                             stateExistingGame: [...this.state.stateExistingGame, val]
                         })
                     });
-                    /*const [id, game] = parse(ref.val());
-                if (!id) return;*/
+                }
+                
             });
         });
     }
@@ -48,14 +48,34 @@ class GameRoom extends Component {
 
     renderTableData() {
         return this.existingGames.map((player, index) => {
-            const { p1_email, p2_email, token } = player;
-            return (
-                <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{p2_email}</td>
-                    <td><a target="_blank" href={domain() + "/#/home/" + token}>Click to Play</a></td>
-                </tr>
-            )
+            const { p1_email, p2_email, p1_token, p2_token, status } = player;
+            let link = '';
+             if (p1_email === this.state.userName) {
+                if (status === 'In Progress') {
+                    link = domain() + "/#/home/" + p1_token;
+                }
+                return (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{p2_email}</td>
+                        <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>Click to Play</a></td>
+                        <td>{status}</td>
+                    </tr>
+                )
+            } else if (p2_email === this.state.userName) {
+                if (status === 'In Progress') {
+                    link = domain() + "/#/home/" + p2_token;
+                }
+                return (
+                    <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{p1_email}</td>
+                        <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>Click to Play</a></td>
+                        <td>{status}</td>
+                    </tr>
+                )
+            }
+            
         })
     }
 
@@ -70,6 +90,7 @@ class GameRoom extends Component {
                         <th>#</th>
                         <th>Opponent Player</th>
                         <th>Game Link</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>

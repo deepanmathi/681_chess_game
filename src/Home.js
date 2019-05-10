@@ -32,7 +32,6 @@ class Home extends Component {
     componentDidMount() {
         const loggedInUser = sessionStorage.getItem('userID');
         const hashLoc = window.location.hash;
-        console.log(hashLoc);
         this.setState({p1_email: loggedInUser});
     }
 

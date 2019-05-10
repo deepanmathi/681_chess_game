@@ -22,7 +22,6 @@ class GameStatistics extends Component {
         let playerMap = new Map();
 
         firebase.database().ref('/games').on('value', function(snapshot) {
-            console.log('Snapshot '+JSON.stringify(snapshot.val()));
             snapshot.forEach(function(childSnapshot) {
                 let obj = {
                     totalMatchesPlayed: 0,
@@ -64,7 +63,6 @@ class GameStatistics extends Component {
                 }
                 playerMap.set(item.p1_email, user1Stat);
                 playerMap.set(item.p2_email, user2Stat);
-                console.log(item);
             });
             for (let [k, v] of playerMap) {
                 v.email = k;
@@ -75,23 +73,24 @@ class GameStatistics extends Component {
     };
 
     renderTableData() {
-        console.log('Method called');
-        console.log('kjahSJKAHD'+JSON.stringify(this.state.playerStats));
-        return this.state.playerStats.map((player, index) => {
-            console.log('kjashdkjas'+JSON.stringify(player));
-            const { totalMatchesPlayed, won,lost,noResult,inProgress,email } = player;
-            return (
-                <tr key={email}>
-                    <td>{index+1}</td>
-                    <td>{email}</td>
-                    <td>{totalMatchesPlayed}</td>
-                    <td>{won}</td>
-                    <td>{lost}</td>
-                    <td>{noResult}</td>
-                    <td>{inProgress}</td>
-                </tr>
-            )
-        })
+        
+        if (this.state.playerStats.length > 0) {
+            return this.state.playerStats.map((player, index) => {
+                const { totalMatchesPlayed, won,lost,noResult,inProgress,email } = player;
+                return (
+                    <tr key={email}>
+                        <td>{index+1}</td>
+                        <td>{email}</td>
+                        <td>{totalMatchesPlayed}</td>
+                        <td>{won}</td>
+                        <td>{lost}</td>
+                        <td>{noResult}</td>
+                        <td>{inProgress}</td>
+                    </tr>
+                )
+            })
+        }
+        
     }
 
     render() {
