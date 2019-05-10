@@ -123,6 +123,7 @@ class Game extends React.Component {
       const moves = engine.moves({
         square: square,
         verbose: true
+        
       });
       // exit if there are no moves available for this square
       if (moves.length === 0) return;

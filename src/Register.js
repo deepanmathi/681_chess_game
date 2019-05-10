@@ -45,23 +45,29 @@ class Register extends Component {
                     firstName: this.state.firstName,
                     lastName: this.state.lastName
                 };
+                console.log(user.email);
                     game
                         .set(user)
-                        .then(() => {}, (err) => {
+                        .then(() => {
+                            
+                        }, (err) => {
                             throw err;
                         });
-                    this.setState({successMessage: 'User successfully registered. Please login to the app from the Login screen now'})
-                }).then((u)=>{})
+                    
+                }).then((u)=>{
+                    this.state.firstName='';
+                            this.state.lastName='';
+                            this.state.email='';
+                            this.state.password='';
+                            this.state.confirmPassword='';
+                            this.setState({successMessage: 'User successfully registered. Please login to the app from the Login screen now'})
+                })
                     .catch((error) => {
                         console.log(error);
                         this.setState({errorMessage: error.message})
 
                     })
-        this.state.firstName='';
-        this.state.lastName='';
-        this.state.email='';
-        this.state.password='';
-        this.state.confirmPassword='';
+        
         }
         
         console.log(this.state.formErrors);
@@ -113,7 +119,7 @@ class Register extends Component {
         return error.length === 0;
     };
 
-     password_validate(p) {
+    password_validate(p) {
         return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/.test(p);
     }
     name_validate(p) {
