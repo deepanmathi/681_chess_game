@@ -250,7 +250,7 @@ function turnText(playerNum, isMyTurn, {p1_email, p2_email}) {
         opponent = p1_email;
       }
     if (isMyTurn) {
-      return current+" Turn";
+      return "Your("+current+") turn";
     } else {
       return "Waiting for "+opponent+" 's move...";
     }

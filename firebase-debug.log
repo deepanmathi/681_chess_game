@@ -1,0 +1,13 @@
+[debug] [2019-05-10T07:22:49.264Z] ----------------------------------------------------------------------
+[debug] [2019-05-10T07:22:49.268Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\deepan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js use --add
+[debug] [2019-05-10T07:22:49.268Z] CLI Version:   6.9.1
+[debug] [2019-05-10T07:22:49.268Z] Platform:      win32
+[debug] [2019-05-10T07:22:49.268Z] Node Version:  v8.9.4
+[debug] [2019-05-10T07:22:49.269Z] Time:          Fri May 10 2019 03:22:49 GMT-0400 (Eastern Daylight Time)
+[debug] [2019-05-10T07:22:49.270Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-05-10T07:22:49.290Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-05-10T07:22:49.291Z] > authorizing via signed-in user
+[debug] [2019-05-10T07:22:49.296Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects  
+ 
+[debug] [2019-05-10T07:22:49.927Z] <<< HTTP RESPONSE 200
