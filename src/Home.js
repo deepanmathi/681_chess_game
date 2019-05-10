@@ -49,14 +49,16 @@ class Home extends Component {
 
      createGame = () => {
          let user = JSON.parse(sessionStorage.getItem('user'));
-
+        let date = new Date();
+        date.setMinutes(date.getMinutes() + 1);
         const newGame = {
             p1_token: Utils.token(),
             p2_token: Utils.token(),
             p1_email: this.state.p1_email,
             p2_email: this.state.p2_email,
             status: 'In Progress',
-            winner: ''
+            winner: '',
+            currentDeadline: date.toString()
         };
         /*,
         * Step 1: Assign logged in user email as Player 1 and put it as p1_userID in newGame const
