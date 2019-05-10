@@ -47,6 +47,20 @@ class Game extends React.Component {
       statusText: statusText(engine.turn(), engine.in_checkmate(), engine.in_draw(), engine.in_check(), id, game, playerNum),
       playerNum: playerNum
     });
+    console.log(this.state.playerNum);
+    if(this.state.statusText.indexOf('Game over')!=-1)
+    {
+      let winnerEmail;
+      console.log("turn"+engine.turn());
+      if (engine.turn() === 'w'){
+        winnerEmail = game.p2_email;
+      } else  {
+        winnerEmail = game.p1_email;
+      }
+      this.setState({
+        turnText: "'"+winnerEmail+ "' has WON the match !!!"
+      })
+    }
   }
 
   _updateBoard(id, game) {
@@ -259,7 +273,7 @@ function statusText(turn, in_mate, in_draw, in_check, id , {p1_token, p2_token, 
     }
     const game = {status: 'Complete', winner: winnerEmail};
     games(id).update(game);
-    return `Game Over, ${moveColor} is in checkmate`;
+    return `Game over, ${moveColor} is in checkmate`;
   } else if (in_draw) {
     return 'Game over, drawn position';
   } else if (in_check) {

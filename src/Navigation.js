@@ -26,9 +26,7 @@ class Navigation extends React.Component {
     logOut() {
         sessionStorage.clear();
         firebase.auth().signOut().then(function() {
-            console.log('User signed out');
         }).catch(function(error) {
-            console.log(error);
         });
         window.location.hash = "/";
         location.reload();
