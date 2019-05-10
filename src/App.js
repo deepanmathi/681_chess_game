@@ -65,7 +65,7 @@ export default class App extends Component {
                           <Route exact path="/" component={Login} />
                           <Route exact path="/signUp" component={Register} />
                           <Route exact path="/home" render={() => ( this.isAuthenticated() ? <Home /> : <Login />)} />
-                          <Route exact path="/home/:token" render={(props) => ( this.isAuthenticated() ? <Game token={props.match.params.token}/> : <Login />)}/>
+                          <Route exact path="/home/:token/:status" render={(props) => ( this.isAuthenticated() ? <Game token={props.match.params.token} status={props.match.params.status}/> : <Login />)}/>
                           <Route exact path="/room/:email" render={(props) => ( this.isAuthenticated() ? <GameRoom email={props.match.params.email}/> : <Login />)} />
 
                       </div>

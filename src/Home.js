@@ -69,7 +69,7 @@ class Home extends Component {
         game
             .set(newGame)
             .then(() => {
-                window.location.hash = `#/home/${newGame.p1_token}`;
+                window.location.hash = `#/home/${newGame.p1_token}/In-Progress`;
                 location.reload();
             }, (err) => {
                 throw err;

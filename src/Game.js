@@ -13,7 +13,8 @@ class Game extends React.Component {
     this.updateDeadline = this.updateDeadline.bind(this);
     this._tick = this._tick.bind(this);
    this.state = { token: this.props.token, squares: [] , playerNum: 0, isMyTurn: true,  
-    deadline: date.toString(), currentDate: '', currentUser: '', disqualifyCounter: 0};
+    deadline: date.toString(), currentDate: '', currentUser: '', disqualifyCounter: 0, status: this.props.status};
+    console.log(this.state.status);
     this.engine = new Chess();
   }
 
@@ -40,23 +41,25 @@ class Game extends React.Component {
     const date = new Date();
     this.setState({currentDate: date.toString()});
     let count = 0;
-    setInterval(this._tick, 10000);
+    let intervalId = 0;
+    if (this.state.status === 'In-Progress') {
+      intervalId = setInterval(this._tick, 10000);
+    }
+    this.setState({intervalId: intervalId});
     listenForUpdates(this.state.token, (id, game) => {
       this.setState({'currentGameID': id});
       this._updateBoard(id, game);
       this._updateInfo(game, id);
-      this._tick(count++, game);
     });
 
   }
 
   componentWillUnmount() {
     // Clear the interval right before component unmount
-    clearInterval(this.interval);
+    clearInterval(this.state.intervalId);
 }
 
   _tick() {
-    console.log('Tick Tock');
     const engine = this.engine;
     if (this.state.deadline) {
       const time = (Date.parse(this.state.deadline) - Date.parse(new Date()));
@@ -97,6 +100,9 @@ class Game extends React.Component {
 
     if(this.state.statusText.indexOf('Game over')!=-1)
     {
+      let date = new Date();
+      this.setState({status: 'Complete'});
+      this.setState({deadline: date.toString()});
       let winnerEmail;
       if (this.engine.turn() === 'w'){
         winnerEmail = game.p2_email;
@@ -357,10 +363,10 @@ function turnOpponent(playerNum, isMyTurn, {p1_email, p2_email}) {
 }
 
 function statusText(turn, in_mate, in_draw, in_check, is_gameOver, id , {p1_token, p2_token, p1_email, p2_email}, playerNum) {
-  console.log('Check Game status');
+ /* console.log('Check Game status');
   console.log('In Mate '+in_mate);
   console.log('In Check '+in_check);
-  console.log('Is Game Over '+is_gameOver);
+  console.log('Is Game Over '+is_gameOver);*/
   const moveColor = turn === 'b' ? "Black" : "White";
   let winnerEmail;
   if (in_mate){

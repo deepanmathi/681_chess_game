@@ -47,67 +47,63 @@ class GameRoom extends Component {
   }
 
     renderTableData() {
-        return this.existingGames.map((player, index) => {
-            const { p1_email, p2_email, p1_token, p2_token, status } = player;
-            let link = '';
-             if (p1_email === this.state.userName) {
-                if (status === 'In Progress') {
-                    link = domain() + "/#/home/" + p1_token;
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{p2_email}</td>
-                            
-                            <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>Click to Play</a></td>
-                            <td>{status}</td>
-                        </tr>
-                    )
+        if (this.existingGames.length > 0) {
+            return this.existingGames.map((player, index) => {
+                const { p1_email, p2_email, p1_token, p2_token, status } = player;
+                let link = '';
+                 if (p1_email === this.state.userName) {
+                    if (status === 'In Progress') {
+                        link = domain() + "/#/home/" + p1_token;
+                        return (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{p2_email}</td>
+                                
+                                <td><a href={domain() + "/#/home/" + p1_token+"/In-Progress"}>Click to Play</a></td>
+                                <td>{status}</td>
+                            </tr>
+                        )
+                    }else if (status === 'Complete') {
+                        link = domain() + "/#/home/" + p1_token;
+                        console.log(link);
+                        return (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{p2_email}</td>
+                                <td><a href={domain() + "/#/home/" + p1_token+"/Complete"}>View Results</a></td>
+                                <td>{status}</td>
+                            </tr>
+                        )
+                    }
+                    
+                } else if (p2_email === this.state.userName) {
+                    if (status === 'In Progress') {
+                        link = domain() + "/#/home/" + p2_token;
+                        return (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{p1_email}</td>
+                                <td><a href={domain() + "/#/home/" + p2_token+"/In-Progress"}>Click to Play</a></td>
+                                <td>{status}</td>
+                            </tr>
+                        )
+                    } else if(status === 'Complete') {
+                        link = domain() + "/#/home/" + p2_token;
+                        return (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{p1_email}</td>
+                                <td><a href={domain() + "/#/home/" + p2_token+"/Complete"}>View Results</a></td>
+                                <td>{status}</td>
+                            </tr>
+                        )
+                    }
+                    
                 }
                 
-                if (status === 'Complete') {
-                    link = domain() + "/#/home/" + p1_token;
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{p1_email}</td>
-                            <td><a target="_blank" href={domain() + "/#/home/" + p1_token}>View Results</a></td>
-                            <td>{status}</td>
-                        </tr>
-                    )
-                }
-                
-            } else if (p2_email === this.state.userName) {
-                if (status === 'In Progress') {
-                    link = domain() + "/#/home/" + p2_token;
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{p1_email}</td>
-                            <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>Click to Play</a></td>
-                            <td>{status}</td>
-                        </tr>
-                    )
-                }
-                
-                 if(status === 'Complete') {
-                    link = domain() + "/#/home/" + p2_token;
-                    return (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{p1_email}</td>
-                            <td><a target="_blank" href={domain() + "/#/home/" + p2_token}>View Results</a></td>
-                            <td>{status}</td>
-                        </tr>
-                    )
-                }
-                
-            }
-            
-            else if (p2_email === this.state.userName) {
-               
-            }
-            
-        })
+            })
+        }
+        
     }
 
     render() {
