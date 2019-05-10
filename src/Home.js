@@ -33,7 +33,6 @@ class Home extends Component {
         const loggedInUser = sessionStorage.getItem('userID');
         const hashLoc = window.location.hash;
         this.setState({p1_email: loggedInUser});
-        this.getLeaderBoard();
     }
 
     clickCreateGame = () => {
