@@ -1,5 +1,6 @@
 import React from 'react';
-
+import Clock from './Clock';
+import Moment from 'react-moment';
 const { firebase, Chess, ChessBoard, metro_board_theme, symbol_piece_theme, wikipedia_board_theme, $ } = window;
 
 const INITIAL_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
@@ -7,7 +8,12 @@ const INITIAL_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 class Game extends React.Component {
   constructor(props) {
     super(props);
-   this.state = { token: this.props.token, squares: [] , playerNum: 0, isMyTurn: true};
+    let date = new Date();
+    date.setMinutes(date.getMinutes() + 15);
+    this.updateDeadline = this.updateDeadline.bind(this);
+    this._tick = this._tick.bind(this);
+   this.state = { token: this.props.token, squares: [] , playerNum: 0, isMyTurn: true,  
+    deadline: date.toString(), currentDate: '', currentUser: '', disqualifyCounter: 0};
     this.engine = new Chess();
   }
 
@@ -23,17 +29,49 @@ class Game extends React.Component {
             <h5 className='status'>{ this.state.statusText }</h5>
           </blockquote>
           <p className='history'>{ history(this.state.moves) }</p>
+          <div className='history'>Deadline to make next move:: <Clock deadline={ this.state.deadline }/></div>
         </div>
       </div>
+      
     );
   }
 
   componentDidMount() {
+    const date = new Date();
+    this.setState({currentDate: date.toString()});
+    let count = 0;
+    setInterval(this._tick, 10000);
     listenForUpdates(this.state.token, (id, game) => {
-      console.log('Game '+JSON.stringify(game));
+      this.setState({'currentGameID': id});
       this._updateBoard(id, game);
       this._updateInfo(game, id);
+      this._tick(count++, game);
     });
+
+  }
+
+  _tick() {
+    const engine = this.engine;
+    if (this.state.deadline) {
+      const time = (Date.parse(this.state.deadline) - Date.parse(new Date()));
+          if(time < 0) {
+            const endFen = '4k3/4P3/4K3/8/8/8/8/8 b - - 0 78';
+            this.engine.load(endFen);
+            this.setState({disqualifyCounter: this.state.disqualifyCounter++});
+            this.setState({statusText : 'Game over!! '+this.state.turnUser+' has been disqualified'});
+            this.setState({turnText: ''});
+            if (this.state.disqualifyCounter < 2) {
+              const id = this.state.currentGameID;
+              const game = {
+                status: 'Complete',
+                winner: this.state.turnOpponent
+              }
+              firebase.database().ref(`/games/${id}`).update(game);
+            }
+          } else {
+            //this._tick(a, game);
+          }
+    }
   }
 
   _updateInfo(game, id) {
@@ -44,15 +82,17 @@ class Game extends React.Component {
       p1_token: game.p1_token,
       p2_token: game.p2_token,
       turnText: turnText(playerNum, isMyTurn(playerNum, engine.turn()), game),
-      statusText: statusText(engine.turn(), engine.in_checkmate(), engine.in_draw(), engine.in_check(), id, game, playerNum),
-      playerNum: playerNum
+      statusText: statusText(this.engine.turn(), this.engine.in_checkmate(), this.engine.in_draw(), this.engine.in_check(), this.engine.game_over(), id, game, playerNum),
+      deadline: setDeadline(game, id),
+      playerNum: playerNum,
+      turnUser: turnUser(playerNum, isMyTurn(playerNum, engine.turn()), game),
+      turnOpponent: turnOpponent(playerNum, isMyTurn(playerNum, engine.turn()), game)
     });
-    console.log(this.state.playerNum);
+
     if(this.state.statusText.indexOf('Game over')!=-1)
     {
       let winnerEmail;
-      console.log("turn"+engine.turn());
-      if (engine.turn() === 'w'){
+      if (this.engine.turn() === 'w'){
         winnerEmail = game.p2_email;
       } else  {
         winnerEmail = game.p1_email;
@@ -73,6 +113,10 @@ class Game extends React.Component {
     } else if (isMyTurn(playerNum, this.engine.turn())) {
       this.board.position(this.engine.fen());
     }
+  }
+
+  updateDeadline(date) {
+    this.setState({deadline: date});
   }
 
   _initBoard(id, game) {
@@ -161,9 +205,9 @@ class Game extends React.Component {
 
       game.fen = engine.fen();
       game.moves = pushMove(game.moves, `${m['from']}-${m['to']}`);
-
+      game.currentDeadline = getCurrentDateTime();
       games(id).set(game);
-    }
+      }
 
     function onSnapEnd() {
       return board.position(engine.fen());
@@ -261,12 +305,59 @@ function turnText(playerNum, isMyTurn, {p1_email, p2_email}) {
 
 }
 
-function statusText(turn, in_mate, in_draw, in_check, id , {p1_token, p2_token, p1_email, p2_email}, playerNum) {
+function turnUser(playerNum, isMyTurn, {p1_email, p2_email}) {
+  if (playerNum > 0) {
+    let opponent,current;
+      if (playerNum === 1) {
+        current=p1_email;
+        opponent = p2_email;
+        
+      } else {
+        current=p2_email;
+        opponent = p1_email;
+      }
+    if (isMyTurn) {
+      return current;
+    } else {
+      return opponent;
+    }
+  } else {
+    return "View Only";
+  }
+
+}
+
+function turnOpponent(playerNum, isMyTurn, {p1_email, p2_email}) {
+  if (playerNum > 0) {
+    let opponent,current;
+      if (playerNum === 1) {
+        current=p1_email;
+        opponent = p2_email;
+        
+      } else {
+        current=p2_email;
+        opponent = p1_email;
+      }
+    if (isMyTurn) {
+      return opponent;
+    } else {
+      return current;
+
+    }
+  } else {
+    return "View Only";
+  }
+
+}
+
+function statusText(turn, in_mate, in_draw, in_check, is_gameOver, id , {p1_token, p2_token, p1_email, p2_email}, playerNum) {
+  console.log('Check Game status');
+  console.log('In Mate '+in_mate);
+  console.log('In Check '+in_check);
+  console.log('Is Game Over '+is_gameOver);
   const moveColor = turn === 'b' ? "Black" : "White";
-  console.log('PlayerNum '+playerNum);
   let winnerEmail;
   if (in_mate){
-    //games(id).update();
     if (playerNum === 2 && turn === 'w'){
       winnerEmail = p2_email;
     } else  {
@@ -279,6 +370,21 @@ function statusText(turn, in_mate, in_draw, in_check, id , {p1_token, p2_token, 
     return 'Game over, drawn position';
   } else if (in_check) {
     return `${moveColor} is in check!`;
+  } else if (is_gameOver) {
+    return `Game over, ${moveColor} is defeated`;
   } else
     return "";
+}
+
+function setDeadline(game, id){
+  if (!game.currentDeadline) {
+    return getCurrentDateTime();
+  }
+  return game.currentDeadline;
+}
+
+function getCurrentDateTime() {
+  let date = new Date();
+  date.setMinutes(date.getMinutes() + 1);
+  return date.toString();
 }
